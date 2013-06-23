@@ -1,0 +1,267 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <ToggleButton
+        android:id="@+id/startStopToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/record_trip_label" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/generateReport"
+        android:layout_below="@+id/startStopToggle" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/summaryLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dip"
+                android:text="@string/summary_label"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TableLayout
+                android:id="@+id/summaryTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="3dip"
+                android:stretchColumns="1" >
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:padding="3dip"
+                        android:text="@string/today_label"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/todayDate"
+                        android:layout_width="wrap_content"
+                        android:gravity="left"
+                        android:padding="3dip"
+                        android:text="25th June 2013"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow android:paddingLeft="10dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:padding="2dip"
+                        android:text="@string/gps_count_label"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/todayGpsCount"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:padding="2dip"
+                        android:text="512"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow android:paddingLeft="10dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:padding="2dip"
+                        android:text="@string/bike_tracks_label"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/todayBikeTracks"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:padding="2dip"
+                        android:text="5"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow android:paddingLeft="10dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:padding="2dip"
+                        android:text="@string/distance_covered_label"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/todayDistanceCovered"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:padding="2dip"
+                        android:text="5120m"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow android:paddingLeft="10dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:padding="2dip"
+                        android:text="@string/avg_speed_label"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/todayAvgSpeed"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:padding="2dip"
+                        android:text="5m/s"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow android:paddingLeft="10dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:padding="2dip"
+                        android:text="@string/top_speed_label"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/todayTopSpeed"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:padding="2dip"
+                        android:text="15m/s"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow android:paddingTop="5dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:padding="3dip"
+                        android:text="@string/total_label"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/totalCount"
+                        android:layout_width="wrap_content"
+                        android:gravity="left"
+                        android:padding="3dip"
+                        android:text="5 days"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow android:paddingLeft="10dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:padding="2dip"
+                        android:text="@string/gps_count_label"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/totalGpsCount"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:padding="2dip"
+                        android:text="512"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow android:paddingLeft="10dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:padding="2dip"
+                        android:text="@string/bike_tracks_label"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/totalBikeTracks"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:padding="2dip"
+                        android:text="5"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow android:paddingLeft="10dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:padding="2dip"
+                        android:text="@string/distance_covered_label"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/totalDistanceCovered"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:padding="2dip"
+                        android:text="5120m"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow android:paddingLeft="10dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:padding="2dip"
+                        android:text="@string/avg_speed_label"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/totalvgSpeed"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:padding="2dip"
+                        android:text="5m/s"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow android:paddingLeft="10dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:padding="2dip"
+                        android:text="@string/top_speed_label"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/totalTopSpeed"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:padding="2dip"
+                        android:text="15m/s"
+                        android:textSize="14sp" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/generateReport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/generate_report_label" >
+
+    </Button>
+
+</RelativeLayout>
