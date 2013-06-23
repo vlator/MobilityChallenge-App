@@ -21,7 +21,6 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.pels.mobilitychallenge.app.common.SamplingMode;
 import com.pels.mobilitychallenge.app.common.Session;
 
 public class SamplingService extends Service {
@@ -125,11 +124,6 @@ public class SamplingService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		String modeName = intent.getStringExtra("sampling_mode");
-
-		if (modeName != null) {
-			Session.setCurrentSamplingMode(SamplingMode.valueOf(modeName));
-			startSampling();
-		}
 
 		return START_REDELIVER_INTENT;
 	}

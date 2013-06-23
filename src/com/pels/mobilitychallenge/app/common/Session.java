@@ -22,12 +22,11 @@ public class Session extends Application {
 	private static int readingsCount;
 	private static long samplingStartTime;
 	private static long samplingStopTime;
-	private static SamplingMode currentSamplingMode;
 	private static boolean debugMode;
 	private static String storagePath = Environment
 			.getExternalStorageDirectory()
 			+ File.separator
-			+ "MobilityChallengeSampler";
+			+ "MobilityChallengeApp";
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"dd-MM-yy", Locale.getDefault());
 	private static DateFormat timeFormat = DateFormat.getTimeInstance();
@@ -69,7 +68,7 @@ public class Session extends Application {
 	 */
 	public static String getCurrentFileName() {
 		if (currentFileName == null) {
-			currentFileName = dateFormat.format(date) + ".csv";
+			currentFileName = dateFormat.format(date);
 		}
 		return currentFileName;
 	}
@@ -94,6 +93,10 @@ public class Session extends Application {
 	 */
 	public static long getLatestTimeStamp() {
 		return latestTimeStamp;
+	}
+	
+	public DateFormat getDateFormat(){
+		return dateFormat;
 	}
 
 	/**
@@ -184,21 +187,6 @@ public class Session extends Application {
 	 */
 	public static void setSamplingStopTime(long samplingStopTime) {
 		Session.samplingStopTime = samplingStopTime;
-	}
-
-	/**
-	 * @return the currentSamplingMode
-	 */
-	public static SamplingMode getCurrentSamplingMode() {
-		return currentSamplingMode;
-	}
-
-	/**
-	 * @param currentSamplingMode
-	 *            the currentSamplingMode to set
-	 */
-	public static void setCurrentSamplingMode(SamplingMode currentSamplingMode) {
-		Session.currentSamplingMode = currentSamplingMode;
 	}
 
 	public static String getStoragePath() {
