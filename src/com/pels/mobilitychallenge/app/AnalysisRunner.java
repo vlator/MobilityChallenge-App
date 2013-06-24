@@ -28,7 +28,7 @@ public class AnalysisRunner {
 	
 	public AnalysisRunner(){
 		todaysDate = Session.getDate();
-		todaysRawFile = new File(Session.getCurrentFileName() + ".csv");
+		todaysRawFile = new File(Session.getStoragePath() + File.separator + Session.getCurrentFileName() + ".csv");
 		classifier = new SimpleClassifier();
 	}
 

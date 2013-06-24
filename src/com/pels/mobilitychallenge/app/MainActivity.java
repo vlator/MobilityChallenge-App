@@ -75,6 +75,7 @@ public class MainActivity extends Activity {
 		todayDistanceLabel = (TextView) findViewById(R.id.todayDistanceCovered);
 		todayAvgSpeedLabel = (TextView) findViewById(R.id.todayAvgSpeed);
 		todayTopSpeedLabel = (TextView) findViewById(R.id.todayTopSpeed);
+		todayBikeTracksLabel = (TextView) findViewById(R.id.todayBikeTracks);
 		// --------
 
 		currentDate = new Date(System.currentTimeMillis());
@@ -87,17 +88,17 @@ public class MainActivity extends Activity {
 	private File getReportFile() {
 		String fullPath = Session.getStoragePath() + File.separator + Session.getCurrentFileName() + ".report";
 		File f = new File(fullPath);
-		if (f.exists()){
-			updateScreen(f);
+		if (f.exists()) {
+			updateDisplay(f);
 		}
 		return f;
 	}
 
-	private void updateScreen(File oldReportFile) {
+	private void updateDisplay(File oldReportFile) {
 		TravelReport report = TravelReport.parse(oldReportFile);
-		if (report != null){
-		updateScreen(reportFile);
-		}else{
+		if (report != null) {
+			updateDisplay(report);
+		} else {
 			showToast("Could not parse existing report file: " + oldReportFile.getName());
 		}
 	}
@@ -126,6 +127,9 @@ public class MainActivity extends Activity {
 			pd = new ProgressDialog(this);
 			pd.setTitle("Analyzing Log for Today");
 			pd.setMessage("Please wait.");
+			pd.setCancelable(false);
+			pd.setIndeterminate(true);
+			pd.show();
 			TravelReport report = analysisRunner.run();
 			if (report != null) {
 				pd.setMessage("Updating records.");
@@ -135,19 +139,16 @@ public class MainActivity extends Activity {
 				pd.setMessage("Log file for today did not produce any travel report");
 				pd.cancel();
 			}
-			pd.setCancelable(false);
-			pd.setIndeterminate(true);
-			pd.show();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			pd.setMessage("Could not run analysis. No log file for today was found.");
-			pd.cancel();
+			String str = "Could not run analysis. No log file was found for today.";
+			pd.setMessage(str);
+			showToast(str);
 		}
-
+		pd.cancel();
 	}
 
 	private void writeTravelReportToFile(TravelReport report) {
-		if (reportFile.exists()){
+		if (reportFile.exists()) {
 			showToast("Exisitng Report File will be overwritten!");
 		}
 		TravelReport.writeToFile(reportFile, report);
@@ -159,11 +160,11 @@ public class MainActivity extends Activity {
 
 	private void updateDisplay(TravelReport report) {
 		dateLabel.setText(DateFormat.format(DATE_DISPLAY_FORMAT, currentDate));
-		todayGpsLabel.setText(report.getGpsCount(Label.BIKE) + "");
+		todayGpsLabel.setText(report.getGpsCount(Label.BIKE) + " GPS traces");
 		todayAvgSpeedLabel.setText(report.getAverageSpeed(Label.BIKE) + "m/s");
 		todayTopSpeedLabel.setText(report.getTopSpeed(Label.BIKE) + "m/s");
 		todayDistanceLabel.setText(report.getDistanceCovered(Label.BIKE) + "m");
-		todayBikeTracksLabel.setText(report.getTracksCount(Label.BIKE) + "");
+		todayBikeTracksLabel.setText(report.getTracksCount(Label.BIKE) + " tracks");
 	}
 
 	private void startSamplingService() {

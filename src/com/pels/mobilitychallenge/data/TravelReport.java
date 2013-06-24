@@ -143,7 +143,7 @@ public class TravelReport {
 		} else if (label == Label.DEFAULT) {
 			return otherTracksTopSpeed;
 		} else {
-			return bikeTracksTopSpeed + otherTracksTopSpeed;
+			return bikeTracksTopSpeed > otherTracksTopSpeed ? bikeTracksTopSpeed : otherTracksTopSpeed;
 		}
 	}
 
@@ -214,27 +214,34 @@ public class TravelReport {
 			for (int i = 0; i < allFrames.size(); i++) {
 				FramedReadings cFrame = allFrames.get(i);
 				Label label = cFrame.getLabel();
+				frames.add(cFrame);
 				if (currentLabel == label) {
-					frames.add(cFrame);
 					tolerance = 0;
 				} else {
 					tolerance++;
 					if (tolerance > MAX_TOLERANCE) {
-						FramedReadings f1 = frames.remove(i - 1);
-						FramedReadings f2 = frames.remove(i - 2);
+						ArrayList<FramedReadings> temp = new ArrayList<FramedReadings>();
+						int calIndex = frames.size() - tolerance;
+						for (int j = MAX_TOLERANCE; j >= 0; j--) {
+							temp.add(frames.remove(calIndex));
+						}
 						Track t = new Track(frames, currentLabel);
 						if (t.getLabel() == Label.BIKE) {
 							bikeTracks.add(t);
 						} else {
 							otherTracks.add(t);
 						}
-
-						frames.clear();
-						frames.add(f2);
-						frames.add(f1);
+						frames = temp;
 						tolerance = 0;
+						currentLabel = label;
 					}
 				}
+			}
+			Track t = new Track(frames, currentLabel);
+			if (t.getLabel() == Label.BIKE) {
+				bikeTracks.add(t);
+			} else {
+				otherTracks.add(t);
 			}
 			TravelReport report = new TravelReport(bikeTracks, otherTracks);
 			return report;
@@ -257,13 +264,15 @@ public class TravelReport {
 					name = ALL_TRACKS;
 				}
 
-				writer.println(name + " :" + report.getTracksCount(l));
+				writer.println(name + ": " + report.getTracksCount(l));
 				writer.println(TOTAL_GPS_COUNT + report.getGpsCount(l));
 				writer.println(TOTAL_DISTANCE_COVERED + report.getDistanceCovered(l));
 				writer.println(AVERAGE_SPEED + report.getAverageSpeed(l));
 				writer.println(TOP_SPEED + report.getTopSpeed(l));
 				writer.println(SECTION_SEP);
 			}
+			writer.flush();
+			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -277,18 +286,18 @@ public class TravelReport {
 			s1 = new Scanner(oldReportFile);
 			s1.useDelimiter(SECTION_SEP);
 
-			while (s1.hasNext()) {
+			if (s1.hasNext()) {
 				oldReport = new TravelReport();
 				String section = s1.next();
 				parseSection(Label.BIKE, oldReport, section);
 				section = s1.next();
 				parseSection(Label.DEFAULT, oldReport, section);
 			}
-
+			s1.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
-		}catch(NoSuchElementException e){
+		} catch (NoSuchElementException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -296,7 +305,9 @@ public class TravelReport {
 	}
 
 	private static void parseSection(Label label, TravelReport report, String section) throws NoSuchElementException {
-		Scanner s2 = new Scanner(section);
+		String sectionTrimmed = section.replaceAll("\\r|\\n", ":");
+		sectionTrimmed = sectionTrimmed.replace(" ", "");
+		Scanner s2 = new Scanner(sectionTrimmed);
 		s2.useDelimiter(":");
 		if (s2.hasNext()) {
 			s2.next();
@@ -308,7 +319,8 @@ public class TravelReport {
 			s2.next();
 			report.setAverageSpeed(label, s2.nextDouble());
 			s2.next();
-			report.setAverageSpeed(label, s2.nextDouble());			
+			report.setTopSpeed(label, s2.nextDouble());
 		}
+		s2.close();
 	}
 }
