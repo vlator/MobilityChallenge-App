@@ -10,12 +10,15 @@
 
     <ToggleButton
         android:id="@+id/startStopToggle"
+        android:textOn="@string/stop_record_trip_label"
+        android:textOff="@string/record_trip_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="@string/record_trip_label" />
+        android:text="@string/record_trip_label" 
+        android:onClick="onStartStopClicked"/>
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -42,7 +45,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="3dip"
-                android:stretchColumns="1" >
+                android:stretchColumns="1" 
+                >
 
                 <TableRow>
 
@@ -73,7 +77,7 @@
                     <TextView
                         android:id="@+id/todayGpsCount"
                         android:layout_width="wrap_content"
-                        android:gravity="center"
+                        android:gravity="left"
                         android:padding="2dip"
                         android:text="512"
                         android:textSize="14sp" />
@@ -90,7 +94,7 @@
                     <TextView
                         android:id="@+id/todayBikeTracks"
                         android:layout_width="wrap_content"
-                        android:gravity="center"
+                        android:gravity="left"
                         android:padding="2dip"
                         android:text="5"
                         android:textSize="14sp" />
@@ -107,7 +111,7 @@
                     <TextView
                         android:id="@+id/todayDistanceCovered"
                         android:layout_width="wrap_content"
-                        android:gravity="center"
+                        android:gravity="left"
                         android:padding="2dip"
                         android:text="5120m"
                         android:textSize="14sp" />
@@ -124,7 +128,7 @@
                     <TextView
                         android:id="@+id/todayAvgSpeed"
                         android:layout_width="wrap_content"
-                        android:gravity="center"
+                        android:gravity="left"
                         android:padding="2dip"
                         android:text="5m/s"
                         android:textSize="14sp" />
@@ -141,7 +145,7 @@
                     <TextView
                         android:id="@+id/todayTopSpeed"
                         android:layout_width="wrap_content"
-                        android:gravity="center"
+                        android:gravity="left"
                         android:padding="2dip"
                         android:text="15m/s"
                         android:textSize="14sp" />
@@ -260,6 +264,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:onClick="generateReport"
         android:text="@string/generate_report_label" >
 
     </Button>

@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MobilityChallengeApp</string>
+    <string name="app_name">Mobility Challenge</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="summary_label">Your Trip Report</string>
-    <string name="today_label">Today</string>
-    <string name="total_label">Total</string>
-    <string name="gps_count_label">GPS Points Recorded</string>
-    <string name="bike_tracks_label">Bike Tracks</string>
-    <string name="distance_covered_label">Distance Covered</string>
-    <string name="avg_speed_label">Average Speed</string>
-    <string name="top_speed_label">Top Speed</string>
+    <string name="today_label">Today: </string>
+    <string name="total_label">Total: </string>
+    <string name="gps_count_label">GPS Points Recorded: </string>
+    <string name="bike_tracks_label">Bike Tracks: </string>
+    <string name="distance_covered_label">Distance Covered: </string>
+    <string name="avg_speed_label">Average Speed: </string>
+    <string name="top_speed_label">Top Speed: </string>
     <string name="generate_report_label">Generate Report</string>
     <string name="record_trip_label">Start Recording Trip</string>
     <string name="stop_record_trip_label">Stop Recording Trip</string>
-    <string name="recoding_trip_notification_text">Recording your trip (…, &#8230;) ?</string>
+    <string name="recoding_trip_notification_text">Recording your trip &#8230;</string>
     <string name="recoding_trip_notification_title">Mobility Challenge</string>
     <string name="recoding_trip_service_stopped">Background recording service stopped.</string>
     <string name="recoding_trip_service_started">Background recording service started.</string>
