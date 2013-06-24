@@ -22,8 +22,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.pels.mobilitychallenge.app.common.Session;
+import com.pels.mobilitychallenge.base.data.Reading;
 
 public class SamplingService extends Service {
+
+
 
 	private final IBinder mBinder = new SamplingServiceBinder();
 
@@ -60,6 +63,7 @@ public class SamplingService extends Service {
 			Session.setSampling(true);
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
 			showNotification();
+			makeToast(getText(R.string.recoding_trip_service_started));
 			return true;
 		} else {
 			Session.setSampling(false);
@@ -69,7 +73,7 @@ public class SamplingService extends Service {
 
 	private boolean setUpLogFile() {
 		boolean ret = false;
-		String filePath = Session.getStoragePath() + File.separator + Session.getCurrentFileName();
+		String filePath = Session.getStoragePath() + File.separator + Session.getCurrentFileName() + ".csv";
 		currentLogFile = new File(filePath);
 
 		if (!currentLogFile.exists()) {
@@ -79,7 +83,6 @@ public class SamplingService extends Service {
 				writer = new BufferedOutputStream(new FileOutputStream(currentLogFile, true));
 				ret = true;
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -91,13 +94,12 @@ public class SamplingService extends Service {
 		try {
 			currentLogFile.getParentFile().mkdirs();
 			writer = new BufferedOutputStream(new FileOutputStream(currentLogFile));
-			String header = "time,latitude,longitude,elevation,accuracy,bearing,speed,label\n";
-			writer.write(header.getBytes());
+			writer.write((Reading.HEADER_NO_LABEL + "\n").getBytes());
 			writer.flush();
 			ret = true;
 		} catch (Exception e) {
 			e.printStackTrace();
-			Toast.makeText(getApplicationContext(), "Could not create log file", Toast.LENGTH_LONG).show();
+			makeToast("Could not create log file");
 		}
 		return ret;
 	}
@@ -109,7 +111,6 @@ public class SamplingService extends Service {
 				try {
 					writer.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -117,16 +118,10 @@ public class SamplingService extends Service {
 			Session.setNotificationVisible(false);
 			Session.setSampling(false);
 			Session.setStarted(false);
-			makeToast(getText(R.string.recoding_trip_service_started));
+			makeToast(getText(R.string.recoding_trip_service_stopped));
 		}
 	}
 
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		String modeName = intent.getStringExtra("sampling_mode");
-
-		return START_REDELIVER_INTENT;
-	}
 
 	@Override
 	public void onDestroy() {
@@ -143,22 +138,13 @@ public class SamplingService extends Service {
 		}
 
 		@Override
-		public void onProviderDisabled(String provider) {
-			// TODO Auto-generated method stub
-
-		}
+		public void onProviderDisabled(String provider) { }
 
 		@Override
-		public void onProviderEnabled(String provider) {
-			// TODO Auto-generated method stub
-
-		}
+		public void onProviderEnabled(String provider) { }
 
 		@Override
-		public void onStatusChanged(String provider, int status, Bundle extras) {
-			// TODO Auto-generated method stub
-
-		}
+		public void onStatusChanged(String provider, int status, Bundle extras) { }
 
 	}
 
@@ -173,7 +159,7 @@ public class SamplingService extends Service {
 		PendingIntent pending = PendingIntent.getActivity(getApplicationContext(), 0, contentIntent,
 				android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
 
-		Notification nfc = new Notification(R.drawable.ic_launcher, null, System.currentTimeMillis());
+		Notification nfc = new Notification(R.drawable.mc_icon, null, System.currentTimeMillis());
 		nfc.flags |= Notification.FLAG_ONGOING_EVENT;
 
 		String contentText = getString(R.string.recoding_trip_notification_text);
@@ -188,7 +174,7 @@ public class SamplingService extends Service {
 		StringBuilder sb = new StringBuilder();
 		sb.append(loc.getTime() + ",").append(loc.getLatitude() + ",").append(loc.getLongitude() + ",")
 				.append(loc.getAltitude() + ",").append(loc.getAccuracy() + ",").append(loc.getBearing() + ",")
-				.append(loc.getSpeed() + ",");
+				.append(loc.getSpeed());
 		String outputString = sb.toString() + "\n";
 		// String outputString = String.format(Locale.US,
 		// "%d,%d,%d,%d,%d,%d,%d,%s\n",
@@ -207,7 +193,6 @@ public class SamplingService extends Service {
 				writer.write(outputString.getBytes());
 				writer.flush();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				makeToast("Could not append new reading: " + outputString);
 			}
 		}
@@ -215,6 +200,5 @@ public class SamplingService extends Service {
 
 	private void makeToast(CharSequence string) {
 		Toast.makeText(getApplicationContext(), string, Toast.LENGTH_LONG).show();
-
 	}
 }
