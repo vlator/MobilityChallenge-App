@@ -5,6 +5,8 @@
     <string name="action_settings">Settings</string>
     <string name="summary_label">Your Trip Report</string>
     <string name="today_label">Today: </string>
+    <string name="viewing_old_report_label">You are viewing an old report!</string>
+    <string name="viewing_new_report_label">You are viewing the current report!</string>
     <string name="total_label">Total: </string>
     <string name="gps_count_label">GPS Points Recorded: </string>
     <string name="bike_tracks_label">Bike Tracks: </string>

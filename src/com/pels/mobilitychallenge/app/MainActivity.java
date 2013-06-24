@@ -38,6 +38,7 @@ public class MainActivity extends Activity {
 	private TextView todayBikeTracksLabel;
 	private TextView todayAvgSpeedLabel;
 	private TextView todayTopSpeedLabel;
+	private TextView oldReportViewLabel;
 
 	private static final String DATE_DISPLAY_FORMAT = "MMMM dd, yyyy";
 
@@ -73,6 +74,7 @@ public class MainActivity extends Activity {
 		todayAvgSpeedLabel = (TextView) findViewById(R.id.todayAvgSpeed);
 		todayTopSpeedLabel = (TextView) findViewById(R.id.todayTopSpeed);
 		todayBikeTracksLabel = (TextView) findViewById(R.id.todayBikeTracks);
+		oldReportViewLabel = (TextView) findViewById(R.id.oldReportLabel);
 		// --------
 
 		currentDate = new Date(System.currentTimeMillis());
@@ -86,6 +88,7 @@ public class MainActivity extends Activity {
 		File f = new File(fullPath);
 		if (f.exists()) {
 			updateDisplay(f);
+			oldReportViewLabel.setVisibility(View.VISIBLE);
 		}
 		return f;
 	}
@@ -120,8 +123,9 @@ public class MainActivity extends Activity {
 
 	public void generateReport(View view) {
 		try {
-			TravelReport report = new AnalysisTask(this).execute((Void[])null).get();
+			TravelReport report = new AnalysisTask(this).execute().get();
 			if (report != null) {
+				oldReportViewLabel.setVisibility(View.GONE);
 				updateDisplay(report);
 				writeTravelReportToFile(report);
 			}
@@ -145,10 +149,10 @@ public class MainActivity extends Activity {
 
 	private void updateDisplay(TravelReport report) {
 		dateLabel.setText(DateFormat.format(DATE_DISPLAY_FORMAT, currentDate));
-		todayGpsLabel.setText(report.getGpsCount(Label.BIKE) + " GPS traces");
-		todayAvgSpeedLabel.setText(report.getAverageSpeed(Label.BIKE) + "m/s");
-		todayTopSpeedLabel.setText(report.getTopSpeed(Label.BIKE) + "m/s");
-		todayDistanceLabel.setText(report.getDistanceCovered(Label.BIKE) + "m");
+		todayGpsLabel.setText(report.getGpsCount(Label.BIKE) + " traces");
+		todayAvgSpeedLabel.setText(String.format("%.2f %s", report.getAverageSpeed(Label.BIKE), "m/s"));
+		todayTopSpeedLabel.setText(String.format("%.2f %s", report.getTopSpeed(Label.BIKE), "m/s"));
+		todayDistanceLabel.setText(String.format("%.2f %s", report.getDistanceCovered(Label.BIKE) ,"m"));
 		todayBikeTracksLabel.setText(report.getTracksCount(Label.BIKE) + " tracks");
 	}
 

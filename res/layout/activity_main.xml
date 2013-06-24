@@ -40,6 +40,16 @@
                 android:text="@string/summary_label"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
+            <TextView
+                android:id="@+id/oldReportLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="16sp"
+                android:background="#333333"
+                android:textColor="#e8a317"
+                android:text="@string/viewing_old_report_label" />
+
             <TableLayout
                 android:id="@+id/summaryTable"
                 android:layout_width="wrap_content"

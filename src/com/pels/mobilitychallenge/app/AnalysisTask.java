@@ -18,7 +18,7 @@ import com.pels.mobilitychallenge.base.data.Reading;
 import com.pels.mobilitychallenge.base.data.ReadingsLoader;
 import com.pels.mobilitychallenge.data.TravelReport;
 
-public class AnalysisTask extends AsyncTask<Void, Integer, TravelReport> {
+public class AnalysisTask extends AsyncTask<Void, Void, TravelReport> {
 	private static final String DATE_DISPLAY_FORMAT = "MMMM dd, yyyy";
 	private static final String ERR_MSG = "Could not find log for today to run analysis on.";
 
@@ -36,10 +36,11 @@ public class AnalysisTask extends AsyncTask<Void, Integer, TravelReport> {
 	Context context;
 
 	public AnalysisTask(Context context) {
+		super();
 		this.context = context;
 		todaysDate = Session.getDate();
 		dateString = (String) DateFormat.format(DATE_DISPLAY_FORMAT, todaysDate);
-		
+
 		todaysRawFile = new File(Session.getStoragePath() + File.separator + Session.getCurrentFileName() + ".csv");
 		classifier = new SimpleClassifier();
 	}
@@ -79,25 +80,21 @@ public class AnalysisTask extends AsyncTask<Void, Integer, TravelReport> {
 	protected TravelReport doInBackground(Void... params) {
 		TravelReport report = null;
 		try {
-			Thread.sleep(5000);
 			report = run();
-			if (report == null){
+			if (report == null) {
 				pd.setMessage("Log file for today did not produce any travel report");
 				pd.dismiss();
 			}
 		} catch (FileNotFoundException e) {
 			String str = "Could not run analysis. No log file was found for today.";
 			pd.setMessage(str);
-			pd.dismiss();  
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			pd.dismiss();
 		}
 		return report;
 	}
-	
-    @Override
-    protected void onPostExecute(TravelReport result) {
-            pd.dismiss();
-    }
+
+	@Override
+	protected void onPostExecute(TravelReport result) {
+		pd.dismiss();
+	}
 }
