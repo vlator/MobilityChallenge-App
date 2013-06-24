@@ -1,11 +1,10 @@
 package com.pels.mobilitychallenge.app;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -33,7 +32,6 @@ public class MainActivity extends Activity {
 
 	private ToggleButton startStopToggle;
 	private Button generateReportBtn;
-	private ProgressDialog pd;
 	private TextView dateLabel;
 	private TextView todayGpsLabel;
 	private TextView todayDistanceLabel;
@@ -43,7 +41,6 @@ public class MainActivity extends Activity {
 
 	private static final String DATE_DISPLAY_FORMAT = "MMMM dd, yyyy";
 
-	private AnalysisRunner analysisRunner;
 
 	/**
 	 * Provides a connection to the GPS Sampling Service
@@ -81,7 +78,6 @@ public class MainActivity extends Activity {
 		currentDate = new Date(System.currentTimeMillis());
 		Session.setDate(currentDate);
 
-		analysisRunner = new AnalysisRunner();
 		reportFile = getReportFile();
 	}
 
@@ -124,27 +120,16 @@ public class MainActivity extends Activity {
 
 	public void generateReport(View view) {
 		try {
-			pd = new ProgressDialog(this);
-			pd.setTitle("Analyzing Log for Today");
-			pd.setMessage("Please wait.");
-			pd.setCancelable(false);
-			pd.setIndeterminate(true);
-			pd.show();
-			TravelReport report = analysisRunner.run();
+			TravelReport report = new AnalysisTask(this).execute((Void[])null).get();
 			if (report != null) {
-				pd.setMessage("Updating records.");
 				updateDisplay(report);
 				writeTravelReportToFile(report);
-			} else {
-				pd.setMessage("Log file for today did not produce any travel report");
-				pd.cancel();
 			}
-		} catch (FileNotFoundException e) {
-			String str = "Could not run analysis. No log file was found for today.";
-			pd.setMessage(str);
-			showToast(str);
+		} catch (InterruptedException e) {
+			showToast("Analysis task was interrupted! Please try again later.");
+		} catch (ExecutionException e) {
+			showToast("Analysis task was not completed! Please try again later.");
 		}
-		pd.cancel();
 	}
 
 	private void writeTravelReportToFile(TravelReport report) {

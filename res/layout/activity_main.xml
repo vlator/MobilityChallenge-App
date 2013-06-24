@@ -10,15 +10,15 @@
 
     <ToggleButton
         android:id="@+id/startStopToggle"
-        android:textOn="@string/stop_record_trip_label"
-        android:textOff="@string/record_trip_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="@string/record_trip_label" 
-        android:onClick="onStartStopClicked"/>
+        android:onClick="onStartStopClicked"
+        android:text="@string/record_trip_label"
+        android:textOff="@string/record_trip_label"
+        android:textOn="@string/stop_record_trip_label" />
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -45,8 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="3dip"
-                android:stretchColumns="1" 
-                >
+                android:stretchColumns="1" >
 
                 <TableRow>
 
@@ -266,7 +265,6 @@
         android:layout_alignParentRight="true"
         android:onClick="generateReport"
         android:text="@string/generate_report_label" >
-
     </Button>
 
 </RelativeLayout>
